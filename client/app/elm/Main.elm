@@ -1,8 +1,8 @@
 module Main exposing (main)
 
 import Html.App as App
-import Html exposing (div, h1, text, form, input, button, table, tr, td)
-import Html.Attributes exposing (class, type', placeholder, value)
+import Html exposing (div, h1, text, form, input, button, table, tr, td, p, a)
+import Html.Attributes exposing (class, type', placeholder, value, href)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import WebSocket
 
@@ -123,12 +123,21 @@ greeting =
 
 description : Html.Html Msg
 description =
-    div [] [ text "This is a chat app written in Kemal and Elm" ]
+    div []
+        [ p [] [ text "This is a chat app written in Kemal and Elm." ]
+        , p []
+            [ text "The source code is available "
+            , a [ href "https://github.com/kofno/kemal_elm_chat" ]
+                [ text "here" ]
+            , text "."
+            ]
+        ]
 
 
 callToAction : Html.Html Msg
 callToAction =
-    div [] [ text "Try it out!" ]
+    div []
+        [ p [] [ text "Try it out!" ] ]
 
 
 messageForm : Model -> Html.Html Msg

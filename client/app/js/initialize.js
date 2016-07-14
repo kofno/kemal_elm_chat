@@ -2,5 +2,8 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   const elmNode = document.getElementById('app');
-  Elm.Main.embed(elmNode, { locationHost: location.host });
+  Elm.Main.embed(elmNode, {
+    locationHost: location.host,
+    protocol: location.protocol
+  });
 });

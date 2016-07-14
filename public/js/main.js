@@ -8766,7 +8766,14 @@ var _user$project$Main$callToAction = A2(
 		[]),
 	_elm_lang$core$Native_List.fromArray(
 		[
-			_elm_lang$html$Html$text('Try it out!')
+			A2(
+			_elm_lang$html$Html$p,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text('Try it out!')
+				]))
 		]));
 var _user$project$Main$description = A2(
 	_elm_lang$html$Html$div,
@@ -8774,7 +8781,33 @@ var _user$project$Main$description = A2(
 		[]),
 	_elm_lang$core$Native_List.fromArray(
 		[
-			_elm_lang$html$Html$text('This is a chat app written in Kemal and Elm')
+			A2(
+			_elm_lang$html$Html$p,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text('This is a chat app written in Kemal and Elm.')
+				])),
+			A2(
+			_elm_lang$html$Html$p,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text('The source code is available '),
+					A2(
+					_elm_lang$html$Html$a,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$href('https://github.com/kofno/kemal_elm_chat')
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text('here')
+						])),
+					_elm_lang$html$Html$text('.')
+				]))
 		]));
 var _user$project$Main$greeting = A2(
 	_elm_lang$html$Html$h1,
