@@ -8794,16 +8794,27 @@ var _user$project$Main$init = function (flags) {
 		_1: _elm_lang$core$Platform_Cmd$none
 	};
 };
+var _user$project$Main$websocketProtocol = function (model) {
+	var _p1 = model.config.protocol;
+	if (_p1 === 'https:') {
+		return 'wss:';
+	} else {
+		return 'ws:';
+	}
+};
 var _user$project$Main$websocketUrl = function (model) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
-		'ws://',
-		A2(_elm_lang$core$Basics_ops['++'], model.config.locationHost, '/chat'));
+		_user$project$Main$websocketProtocol(model),
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			'//',
+			A2(_elm_lang$core$Basics_ops['++'], model.config.locationHost, '/chat')));
 };
 var _user$project$Main$update = F2(
 	function (msg, model) {
-		var _p1 = msg;
-		switch (_p1.ctor) {
+		var _p2 = msg;
+		switch (_p2.ctor) {
 			case 'Reset':
 				return {
 					ctor: '_Tuple2',
@@ -8817,7 +8828,7 @@ var _user$project$Main$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{message: _p1._0}),
+						{message: _p2._0}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'SendMessage':
@@ -8832,18 +8843,18 @@ var _user$project$Main$update = F2(
 						model.message)
 				};
 			default:
-				var _p3 = _p1._0;
+				var _p4 = _p2._0;
 				var messages = function () {
-					var _p2 = model.messages;
-					if (_p2.ctor === 'Nothing') {
+					var _p3 = model.messages;
+					if (_p3.ctor === 'Nothing') {
 						return _elm_lang$core$Native_List.fromArray(
-							[_p3]);
+							[_p4]);
 					} else {
 						return A2(
 							_elm_lang$core$List$append,
-							_p2._0,
+							_p3._0,
 							_elm_lang$core$Native_List.fromArray(
-								[_p3]));
+								[_p4]));
 					}
 				}();
 				return {
@@ -8857,9 +8868,10 @@ var _user$project$Main$update = F2(
 				};
 		}
 	});
-var _user$project$Main$Config = function (a) {
-	return {locationHost: a};
-};
+var _user$project$Main$Config = F2(
+	function (a, b) {
+		return {locationHost: a, protocol: b};
+	});
 var _user$project$Main$Model = F3(
 	function (a, b, c) {
 		return {messages: a, message: b, config: c};
@@ -8959,8 +8971,13 @@ var _user$project$Main$main = {
 		_elm_lang$core$Json_Decode$andThen,
 		A2(_elm_lang$core$Json_Decode_ops[':='], 'locationHost', _elm_lang$core$Json_Decode$string),
 		function (locationHost) {
-			return _elm_lang$core$Json_Decode$succeed(
-				{locationHost: locationHost});
+			return A2(
+				_elm_lang$core$Json_Decode$andThen,
+				A2(_elm_lang$core$Json_Decode_ops[':='], 'protocol', _elm_lang$core$Json_Decode$string),
+				function (protocol) {
+					return _elm_lang$core$Json_Decode$succeed(
+						{locationHost: locationHost, protocol: protocol});
+				});
 		})
 };
 

@@ -8,7 +8,9 @@ import WebSocket
 
 
 type alias Config =
-    { locationHost : String }
+    { locationHost : String
+    , protocol : String
+    }
 
 
 type alias Model =
@@ -35,9 +37,19 @@ main =
         }
 
 
+websocketProtocol : Model -> String
+websocketProtocol model =
+    case model.config.protocol of
+        "https:" ->
+            "wss:"
+
+        _ ->
+            "ws:"
+
+
 websocketUrl : Model -> String
 websocketUrl model =
-    "ws://" ++ model.config.locationHost ++ "/chat"
+    websocketProtocol model ++ "//" ++ model.config.locationHost ++ "/chat"
 
 
 subscriptions : Model -> Sub Msg
