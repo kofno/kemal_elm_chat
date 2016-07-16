@@ -8722,6 +8722,7 @@ var _elm_lang$websocket$WebSocket$onSelfMsg = F3(
 	});
 _elm_lang$core$Native_Platform.effectManagers['WebSocket'] = {pkg: 'elm-lang/websocket', init: _elm_lang$websocket$WebSocket$init, onEffects: _elm_lang$websocket$WebSocket$onEffects, onSelfMsg: _elm_lang$websocket$WebSocket$onSelfMsg, tag: 'fx', cmdMap: _elm_lang$websocket$WebSocket$cmdMap, subMap: _elm_lang$websocket$WebSocket$subMap};
 
+var _user$project$Main$messagesDecoder = _elm_lang$core$Json_Decode$list(_elm_lang$core$Json_Decode$string);
 var _user$project$Main$messageRow = function (msg) {
 	return A2(
 		_elm_lang$html$Html$tr,
@@ -8865,7 +8866,8 @@ var _user$project$Main$update = F2(
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'SendMessage':
-				return {
+				return _elm_lang$core$String$isEmpty(
+					_elm_lang$core$String$trim(model.message)) ? {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none} : {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
@@ -8876,18 +8878,17 @@ var _user$project$Main$update = F2(
 						model.message)
 				};
 			default:
-				var _p4 = _p2._0;
+				var recievedMessages = A2(
+					_elm_lang$core$Result$withDefault,
+					_elm_lang$core$Native_List.fromArray(
+						[]),
+					A2(_elm_lang$core$Json_Decode$decodeString, _user$project$Main$messagesDecoder, _p2._0));
 				var messages = function () {
 					var _p3 = model.messages;
 					if (_p3.ctor === 'Nothing') {
-						return _elm_lang$core$Native_List.fromArray(
-							[_p4]);
+						return recievedMessages;
 					} else {
-						return A2(
-							_elm_lang$core$List$append,
-							_p3._0,
-							_elm_lang$core$Native_List.fromArray(
-								[_p4]));
+						return A2(_elm_lang$core$List$append, _p3._0, recievedMessages);
 					}
 				}();
 				return {

@@ -5,6 +5,8 @@ import Html exposing (div, h1, text, form, input, button, table, tr, td, p, a)
 import Html.Attributes exposing (class, type', placeholder, value, href)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import WebSocket
+import Json.Decode exposing (Decoder, decodeString, list, string)
+import String
 
 
 type alias Config =
@@ -80,19 +82,26 @@ update msg model =
             ( { model | message = newMessage }, Cmd.none )
 
         SendMessage ->
-            ( { model | message = "" }
-            , WebSocket.send (websocketUrl model) model.message
-            )
+            if String.isEmpty (String.trim model.message) then
+                ( model, Cmd.none )
+            else
+                ( { model | message = "" }
+                , WebSocket.send (websocketUrl model) model.message
+                )
 
-        MessageRecieved message ->
+        MessageRecieved payload ->
             let
+                recievedMessages =
+                    decodeString messagesDecoder payload
+                        |> Result.withDefault []
+
                 messages =
                     case model.messages of
                         Nothing ->
-                            [ message ]
+                            recievedMessages
 
                         Just msgs ->
-                            List.append msgs [ message ]
+                            List.append msgs recievedMessages
             in
                 ( { model | messages = Just messages }, Cmd.none )
 
@@ -176,3 +185,8 @@ resetButton : Html.Html Msg
 resetButton =
     button [ class "btn btn-danger", onClick Reset ]
         [ text "Clear Messages" ]
+
+
+messagesDecoder : Decoder (List String)
+messagesDecoder =
+    list string

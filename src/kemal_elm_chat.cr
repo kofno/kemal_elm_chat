@@ -3,21 +3,26 @@ require "kemal"
 
 module KemalElmChat
 
-  SOCKETS = [] of HTTP::WebSocket
+  sockets = [] of HTTP::WebSocket
+  messages = [] of String
 
   get "/" do |env|
     env.redirect "/index.html"
   end
 
   ws "/chat" do |socket|
-    SOCKETS << socket
+    sockets << socket
+    socket.send messages.to_json
 
     socket.on_message do |message|
-      SOCKETS.each { |socket| socket.send message }
+      messages = (messages + [message]).last(50)
+      sockets.each { |socket|
+        socket.send [ message ].to_json
+      }
     end
 
     socket.on_close do
-      SOCKETS.delete socket
+      sockets.delete socket
     end
   end
 
